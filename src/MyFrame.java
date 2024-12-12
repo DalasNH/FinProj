@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLOutput;
 
 public class MyFrame extends JFrame implements ActionListener {
 
@@ -34,8 +33,8 @@ public class MyFrame extends JFrame implements ActionListener {
 
         rate = new JTextField();
         rate.setFont(new Font("Comic Sans MS",Font.PLAIN,30));
-        rate.setForeground(Color.yellow);
-        rate.setBackground(Color.magenta);
+        rate.setForeground(new Color(0x2D333C));
+        rate.setBackground(new Color(0xFFFFFF));
 
         //rate.setPreferredSize(new Dimension(250,40));
         rate.setBounds(150,30, 240, 40);
@@ -44,7 +43,7 @@ public class MyFrame extends JFrame implements ActionListener {
         this.add(monthly);
         this.add(annu);
         this.add(label);
-        this.getContentPane().setBackground(new Color(0x00ffff));
+        this.getContentPane().setBackground(new Color(0xFFCDFFD0, true));
 
         //this.pack();
         this.setVisible(true);
