@@ -1,3 +1,5 @@
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
@@ -11,43 +13,93 @@ public class MyFrame extends JFrame implements ActionListener {
     JButton hourly;
     JTextField rate;
     JTextField STrate;
+    private JLabel disp;
+    private JLabel disp2;
+    private JLabel budg1;
+    private JLabel budg2;
+    private JLabel budg3;
+    private JLabel per;
 
-    MyFrame() {
+    public MyFrame() throws MalformedURLException {
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setSize(500, 500);
 
+        per = new JLabel("/...");
+        per.setBounds(430, 25, 90, 50);
+        per.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+
+        disp = new JLabel("Gross Income:");
+        disp.setBounds(50, 190, 400, 50);
+        disp.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+
+        disp2 = new JLabel("Net Income:");
+        disp2.setBounds(50, 220, 400, 50);
+        disp2.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+
+        budg1 = new JLabel("Necessities:");
+        budg1.setBounds(50, 280, 400, 50);
+        budg1.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+
+        budg2 = new JLabel("Discretionary:");
+        budg2.setBounds(50, 320, 400, 50);
+        budg2.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+
+        budg3 = new JLabel("Savings:");
+        budg3.setBounds(50, 360, 400, 50);
+        budg3.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+
+        JLabel dolla = new JLabel("$");
+        dolla.setBounds(230,30,40,40);
+        dolla.setFont(new Font("Comic Sans MS",Font.BOLD,30));
+
+        JLabel perc = new JLabel("%");
+        perc.setBounds(410,85,40,40);
+        perc.setFont(new Font("Comic Sans MS",Font.BOLD,30));
+
         JLabel label = new JLabel("Enter your wage:");
+        label.setFont(new Font("Comic Sans MS",Font.BOLD,20));
         label.setBounds(50, 30, 200, 40);
 
         JLabel sttax = new JLabel("Enter state tax rate:");
-        sttax.setBounds(50, 100, 200, 40);
+        sttax.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+        sttax.setBounds(50, 85, 250, 40);
 
         hourly = new JButton("Hourly");
-        hourly.setBounds(50,160, 100, 40);
+        hourly.setBounds(50,140, 100, 40);
         hourly.addActionListener(this);
 
         annu = new JButton("Annually");
         annu.addActionListener(this);
-        annu.setBounds(290,160, 100, 40);
+        annu.setBounds(290,140, 100, 40);
 
         monthly = new JButton("Monthly");
         monthly.addActionListener(this);
-        monthly.setBounds(170, 160, 100, 40);
+        monthly.setBounds(170, 140, 100, 40);
 
         rate = new JTextField();
+        rate.setHorizontalAlignment(SwingConstants.RIGHT);
         rate.setFont(new Font("Comic Sans MS",Font.PLAIN,30));
         rate.setForeground(new Color(0x21385C));
         rate.setBackground(new Color(0xFFFFFF));
-        rate.setBounds(180,30, 210, 40);
+        rate.setBounds(250,30, 180, 40);
 
         STrate = new JTextField();
+        STrate.setHorizontalAlignment(SwingConstants.RIGHT);
         STrate.setFont(new Font("Comic Sans MS",Font.PLAIN,30));
         STrate.setForeground(new Color(0x21385C));
         STrate.setBackground(new Color(0xFFFFFF));
-        STrate.setBounds(180,100, 210, 40);
+        STrate.setBounds(280,85, 130, 40);
 
+        ImageIcon icon = new ImageIcon("bobby.gif");
+        JLabel bob = new JLabel(icon);
+        bob.setBounds(300,300,200,200);
+
+        this.add(bob);
+        this.add(dolla);
+        this.add(per);
+        this.add(perc);
         this.add(STrate);
         this.add(rate);
         this.add(hourly);
@@ -56,6 +108,11 @@ public class MyFrame extends JFrame implements ActionListener {
         this.add(label);
         this.add(sttax);
         this.getContentPane().setBackground(new Color(0xFFCDFFD0, true));
+        this.add(disp);
+        this.add(disp2);
+        this.add(budg1);
+        this.add(budg2);
+        this.add(budg3);
 
         //this.pack();
         this.setVisible(true);
@@ -65,24 +122,51 @@ public class MyFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e)
     {
         double sttax = Double.parseDouble(STrate.getText());
+        double gross = -1;
+        double net = -1;
+        double nec;
+        double dis;
+        double sav;
+
         if(e.getSource()==hourly)
         {
-            double gross = normalize(1, Integer.parseInt(rate.getText()));
-            System.out.println("Your gross monthly income is " + gross);
-            System.out.println("Your net monthly income is " + TaxCalc(gross, sttax));
+            gross = normalize(1, Integer.parseInt(rate.getText()));
+            net = TaxCalc(gross, sttax);
+            per.setText("/hr");
         }
+
         if(e.getSource()==monthly)
         {
-            double gross = normalize(2, Integer.parseInt(rate.getText()));
-            System.out.println("Your gross monthly income is " + gross);
-            System.out.println("Your net monthly income is " + TaxCalc(gross, sttax));
+            gross = normalize(2, Integer.parseInt(rate.getText()));
+            net = TaxCalc(gross, sttax);
+            per.setText("/mo");
         }
+
         if(e.getSource()==annu)
         {
-            double gross = normalize(3, Integer.parseInt(rate.getText()));
-            System.out.println("Your gross monthly income is " + gross);
-            System.out.println("Your net monthly income is " + TaxCalc(gross, sttax));
+            gross = normalize(3, Integer.parseInt(rate.getText()));
+            net = TaxCalc(gross, sttax);
+            per.setText("/yr");
         }
+
+        nec = net*50;
+        nec = Math.round(nec);
+        nec /=100;
+
+        dis = net*30;
+        dis = Math.round(dis);
+        dis /=100;
+
+        sav = net*20;
+        sav = Math.round(sav);
+        sav /=100;
+
+        disp.setText("Gross Income: " + gross);
+        disp2.setText("Net Income: " + net);
+        budg1.setText("Necessities: " + nec);
+        budg2.setText("Discretionary: " + dis);
+        budg3.setText("Savings: " + sav);
+
     }
 
     public static double normalize(int time, double amount)
@@ -99,6 +183,7 @@ public class MyFrame extends JFrame implements ActionListener {
          if(time == 2)
          {
              month = amount;
+             month *=100;
              month = Math.round(month);
              month = month/100;
              return month;
@@ -115,7 +200,7 @@ public class MyFrame extends JFrame implements ActionListener {
          }
 
     }
-    public static double TaxCalc(double sal, double ST)
+    public double TaxCalc(double sal, double ST)
     {
         sal = sal*12;
         //converts to annual pay instead of monthly
