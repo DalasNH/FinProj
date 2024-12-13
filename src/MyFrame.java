@@ -19,6 +19,7 @@ public class MyFrame extends JFrame implements ActionListener {
     private JLabel budg2;
     private JLabel budg3;
     private JLabel per;
+    private JLabel bob;
 
     public MyFrame() throws MalformedURLException {
 
@@ -30,11 +31,11 @@ public class MyFrame extends JFrame implements ActionListener {
         per.setBounds(430, 25, 90, 50);
         per.setFont(new Font("Comic Sans MS",Font.BOLD,20));
 
-        disp = new JLabel("Gross Income:");
+        disp = new JLabel("Gross Monthly Income:");
         disp.setBounds(50, 190, 400, 50);
         disp.setFont(new Font("Comic Sans MS",Font.BOLD,20));
 
-        disp2 = new JLabel("Net Income:");
+        disp2 = new JLabel("Net Monthly Income:");
         disp2.setBounds(50, 220, 400, 50);
         disp2.setFont(new Font("Comic Sans MS",Font.BOLD,20));
 
@@ -93,8 +94,9 @@ public class MyFrame extends JFrame implements ActionListener {
         STrate.setBounds(280,85, 130, 40);
 
         ImageIcon icon = new ImageIcon("bobby.gif");
-        JLabel bob = new JLabel(icon);
+        bob = new JLabel(icon);
         bob.setBounds(300,300,200,200);
+        bob.setVisible(false);
 
         this.add(bob);
         this.add(dolla);
@@ -161,11 +163,13 @@ public class MyFrame extends JFrame implements ActionListener {
         sav = Math.round(sav);
         sav /=100;
 
-        disp.setText("Gross Income: " + gross);
-        disp2.setText("Net Income: " + net);
-        budg1.setText("Necessities: " + nec);
-        budg2.setText("Discretionary: " + dis);
-        budg3.setText("Savings: " + sav);
+        bob.setVisible(true);
+
+        disp.setText("Gross Monthly Income: $" + gross);
+        disp2.setText("Net Monthly Income: $" + net);
+        budg1.setText("Necessities: $" + nec);
+        budg2.setText("Discretionary: $" + dis);
+        budg3.setText("Savings: $" + sav);
 
     }
 
